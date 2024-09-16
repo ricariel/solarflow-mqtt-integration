@@ -21,7 +21,9 @@ Pull requests are the best way to propose changes to the codebase.
 
 ## Any contributions you make will be under the MIT Software License
 
-In short, when you submit code changes, your submissions are understood to be under the same [MIT License](http://choosealicense.com/licenses/mit/) that covers the project. Feel free to contact the maintainers if that's a concern.
+In short, when you submit code changes, your submissions are understood to be under the same
+[MIT License](http://choosealicense.com/licenses/mit/) that covers the project. Feel free to contact
+the maintainers if that's a concern.
 
 ## Report bugs using Github's [issues](../../issues)
 
@@ -63,8 +65,6 @@ file.
 You can use the `pre-commit` settings implemented in this repository to have
 linting tool checking your contributions (see deicated section below).
 
-
-
 ## Pre-commit
 
 You can use the [pre-commit](https://pre-commit.com/) settings included in the
@@ -74,7 +74,7 @@ With `pre-commit` tool already installed,
 activate the settings of the repository:
 
 ```console
-$ pre-commit install
+pre-commit install
 ```
 
 Now the pre-commit tests will be done every time you commit.
@@ -82,7 +82,7 @@ Now the pre-commit tests will be done every time you commit.
 You can run the tests on all repository file with the command:
 
 ```console
-$ pre-commit run --all-files
+pre-commit run --all-files
 ```
 
 ## License
