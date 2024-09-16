@@ -2,6 +2,7 @@
   "domain": "solarflow_mqtt_integration",
   "name": "Solarflow MQTT Integration",
   "documentation": "https://github.com/ricariel/solarflow-mqtt-integration",
+  "iot_class": "local_polling",
   "issue_tracker": "https://github.com/ricariel/solarflow-mqtt-integration/issues",
   "dependencies": [],
   "config_flow": true,

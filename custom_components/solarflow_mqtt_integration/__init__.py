@@ -8,9 +8,17 @@ import asyncio
 import logging
 from datetime import timedelta
 
+from __future__ import annotations
+
+import voluptuous as vol
+
+from homeassistant.components import mqtt
+from homeassistant.core import HomeAssistant, ServiceCall, callback
+from homeassistant.helpers.typing import ConfigType
+
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import Config
-from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
@@ -25,11 +33,52 @@ from .const import STARTUP_MESSAGE
 
 SCAN_INTERVAL = timedelta(seconds=30)
 
+CONF_TOPIC = 'topic'
+DEFAULT_TOPIC = 'home-assistant/mqtt_example'
+
+# Schema to validate the configured MQTT topic
+CONFIG_SCHEMA = vol.Schema(
+    {
+        DOMAIN: vol.Schema(
+            {
+                vol.Optional(
+                    CONF_TOPIC, default=DEFAULT_TOPIC
+                ): mqtt.valid_subscribe_topic
+            }
+        )
+    },
+    extra=vol.ALLOW_EXTRA,
+)
+
+
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
 async def async_setup(hass: HomeAssistant, config: Config):
-    """Set up this integration using YAML is not supported."""
+    """Set up the MQTT async example component."""
+    topic = config[DOMAIN][CONF_TOPIC]
+    entity_id = 'mqtt_example.last_message'
+
+    # Listen to a message on MQTT.
+    @callback
+    def message_received(topic: str, payload: str, qos: int) -> None:
+        """A new MQTT message has been received."""
+        hass.states.async_set(entity_id, payload)
+
+    await hass.components.mqtt.async_subscribe(topic, message_received)
+
+    hass.states.async_set(entity_id, 'No messages')
+
+    # Service to publish a message on MQTT.
+    @callback
+    def set_state_service(call: ServiceCall) -> None:
+        """Service to send a message."""
+        hass.components.mqtt.async_publish(topic, call.data.get('new_state'))
+
+    # Register our service with Home Assistant.
+    hass.services.async_register(DOMAIN, 'set_state', set_state_service)
+
+    # Return boolean to indicate that initialization was successfully.
     return True
 
 

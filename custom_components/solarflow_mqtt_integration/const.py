@@ -3,7 +3,7 @@
 NAME = "Solarflow MQTT Integration"
 DOMAIN = "solarflow_mqtt_integration"
 DOMAIN_DATA = f"{DOMAIN}_data"
-VERSION = "0.0.0"
+VERSION = "0.1.0"
 
 ATTRIBUTION = "Data provided by http://jsonplaceholder.typicode.com/"
 ISSUE_URL = "https://github.com/ricariel/solarflow-mqtt-integration/issues"
